@@ -1,6 +1,7 @@
 ![Aithor_App_Logo](public/logo.png)
 # It is an android application created by the react native cli 
-# latest running version of Aithor - v 1.0.0
+# latest running version of Aithor - v1.0.1
+# latest running codebase of Aithor - 2
 
 # Code to run in VS Code Cli or Window Powershell
 # Deleting previous cache and junks 

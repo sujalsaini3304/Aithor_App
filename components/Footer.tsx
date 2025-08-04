@@ -8,7 +8,7 @@ const Footer = () => {
       <View style={styles.footerContainer}>
         <Divider />
         <Text style={[styles.text, { marginTop: 20 }]}>
-          v 1.0.0 
+          v1.0.1 
         </Text>
         <Text style={styles.text}>
           &copy; copyright 2025 – 2050

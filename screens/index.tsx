@@ -27,12 +27,13 @@ import usePingServer from '../helper/usePingServer';
 const Index = ({ navigation }) => {
   const isConnected = useNetworkStatus();
   const [text, setText] = useState('');
-  const [countdown, setCountdown] = useState(10);
-  const [timerId, setTimerId] = useState(null);
+  const [countdown, setCountdown] = useState(0);
   const [inputHeight, setInputHeight] = useState(300);
   const [showOnlineMessage, setShowOnlineMessage] = useState(false);
   const { hostname } = useStore();
   const countRef = useRef(0);
+  const timerRef = useRef<number | null>(null);
+
   const [
     isHandleSummaryGenerationButtonPressed,
     setIsHandleSummaryGenerationButtonPressed,
@@ -69,17 +70,23 @@ const Index = ({ navigation }) => {
         return;
       }
 
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
       setCountdown(30);
       const interval = setInterval(() => {
         setCountdown(prev => {
           if (prev <= 1) {
             clearInterval(interval);
+            timerRef.current = null;
             return 0;
           }
           return prev - 1;
         });
-      }, 1000);
-      setTimerId(interval);
+      }, 1500);
+
+      timerRef.current = interval;
 
       axios
         .post(
@@ -87,7 +94,7 @@ const Index = ({ navigation }) => {
           {
             text: data,
           },
-          { timeout: 30000 },
+          { timeout: 45000 },
         )
         .then(response => {
           navigation.navigate('summary', {
@@ -123,7 +130,10 @@ const Index = ({ navigation }) => {
         })
         .finally(() => {
           setIsHandleSummaryGenerationButtonPressed(false);
-          clearInterval(timerId);
+          if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+          }
           setCountdown(30); // reset
         });
     } else {
